@@ -47,7 +47,7 @@ export default class extends Vue {
 @import "~leaflet/dist/leaflet.css";
 
 .map-container
-  height: 50vh
+  height: 800px
   margin: 0
   position: relative
 

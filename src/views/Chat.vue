@@ -1,5 +1,4 @@
 <template>
-  <div class="full-container">
     <div class="peers fxw-nw pos-r">
       <!-- Chat Sidebar -->
       <div class="peer bdR" id="chat-sidebar">
@@ -35,13 +34,13 @@
                 </div>
               </div>
               <div class="peers">
-                <a href="#" class="peer td-n cH-blue-500 fsz-md mR-30" title="">
+                <a href="#" class="peer td-n c-grey-800 cH-grey-500 fsz-md mR-30" title="">
                   <i class="icon-video-camera"></i>
                 </a>
-                <a href="#" class="peer td-n cH-blue-500 fsz-md mR-30" title="">
+                <a href="#" class="peer td-n c-grey-800 cH-grey-500 fsz-md mR-30" title="">
                   <i class="icon-headphone"></i>
                 </a>
-                <a href="#" class="peer td-n cH-blue-500 fsz-md" title="">
+                <a href="#" class="peer td-n c-grey-800 cH-grey-500 fsz-md" title="">
                   <i class="icon-more"></i>
                 </a>
               </div>
@@ -62,7 +61,7 @@
                 />
                 <button
                   type="button"
-                  class="btn btn-primary bdrs-50p w-2r p-0 h-2r pos-a r-1 t-1"
+                  class="btn btn-primary bdrs-50p w-2r p-0 h-2r pos-a r-3 t-3"
                 >
                   <i class="c-white icon-location-arrow"></i>
                 </button>
@@ -72,7 +71,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script lang="ts">

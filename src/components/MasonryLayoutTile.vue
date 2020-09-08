@@ -22,8 +22,7 @@ export default class MasonryLayoutTileC extends Vue {
     default: () => {
       return { "col-md-6": true };
     }
-  })
-  private layoutStyle!: string;
+  }) private layoutStyle!: string;
   @Prop({ default: true }) private wrap!: boolean;
 }
 </script>
@@ -40,4 +39,5 @@ export default class MasonryLayoutTileC extends Vue {
   box-shadow: 0 10px 20px rgba(0,0,0,0.04), 0 6px 6px rgba(0,0,0,0.04)
   &:hover
     box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 6px 6px rgba(0,0,0,0.1)
+
 </style>

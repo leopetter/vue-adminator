@@ -5,12 +5,11 @@
       <div class="sidebar-logo">
         <div class="peers ai-c fxw-nw">
           <div class="peer peer-greed">
-            <router-link class="sidebar-link td-n" to="/">
+            <router-link class="sidebar-link td-n centerX" to="/">
               <div class="peers ai-c fxw-nw">
                 <div class="peer">
                   <div class="logo">
                     <img
-                      class="centerX"
                       src="../assets/images/logo.png"
                       alt=""
                     />
@@ -216,35 +215,6 @@ export default class SidebarC extends Vue {
     list-style-type: none
 
   +between($breakpoint-md, $breakpoint-xl)
-    width: $collapsed-size
-
-    .sidebar-inner
-      .sidebar-logo
-        border-bottom: 1px solid transparent
-        padding: 0
-
-        a
-          .logo
-            background-position: center center
-            width: $collapsed-size
-
-      .sidebar-menu
-        overflow: hidden
-
-        > li
-          > a
-            .title
-              display: none
-
-        li
-          &.dropdown
-            .arrow
-              opacity: 0
-
-            &.open
-              ul.dropdown-menu
-                display: none !important
-
     &:hover
       width: $offscreen-size
 
@@ -295,31 +265,34 @@ export default class SidebarC extends Vue {
   border-right-style: solid
   +theme-color-diff(border-right-color, bgc-navbar, 6)
   line-height: 0
-  padding: 0 25px
+  padding: 0
   transition: all 0.2s ease
+  height: $header-height
+  position: relative
+  width: 100%
 
-  a
-    display: inline-block
-    width: 100%
+  a 
+    position: absolute
 
-    .logo
-      height: $header-height
+  .logo
+    height: $header-height
 
-      img
-        position: relative
-        display: inline-block
-        top: 20%
-        height: 60%
-        padding-right: 18px
+    img
+      position: relative
+      top: 20%
+      height: 60%
 
-    .logo-text
-      +theme(color, c-logo-text)
-      padding-left: 10px
+  .logo-text
+    +theme(color, c-logo-text)
+    padding-left: 15px
+    overflow: hidden
+    white-space: nowrap
 
   .mobile-toggle
     display: none
     float: right
     font-size: 18px
+    padding-right: 25px
     line-height: calc(#{$header-height} - 1px)
 
     a
@@ -337,8 +310,6 @@ export default class SidebarC extends Vue {
 // ---------------------------------------------------------
 
 .sidebar-menu
-  +clearfix
-
   border-right-width: 1px
   border-right-style: solid
   +theme-color-diff(border-right-color, bgc-navbar, 6)
@@ -444,11 +415,17 @@ export default class SidebarC extends Vue {
               a
                 color: $default-dark
 
+          .icon-holder
+            display: none
+
+          .arrow
+            margin-top: -7px
+
     a
       display: block
       font-size: 15px
       font-weight: 500
-      padding: 5px 15px
+      padding: 0px 15px
       position: relative
       white-space: nowrap
 
@@ -471,27 +448,31 @@ export default class SidebarC extends Vue {
 
 .is-collapsed
   .sidebar
-    +from($breakpoint-xl)
+    +from($breakpoint-md)
       width: $collapsed-size
 
       .sidebar-inner
         .sidebar-logo
           border-bottom: 1px solid transparent
+          .logo-text
+            display: none
 
-        .sidebar-menu
-          > li
-            > a
-              .title
-                display: none
+      .sidebar-menu
+        overflow: hidden
 
-          li
-            &.dropdown
-              .arrow
-                opacity: 0
+        > li
+          > a
+            .title
+              display: none
 
-              &.open
-                ul.dropdown-menu
-                  display: none !important
+        li
+          &.dropdown
+            .arrow
+              opacity: 0
+
+            &.open
+              ul.dropdown-menu
+                display: none !important
 
       &:hover
         width: $offscreen-size
@@ -517,38 +498,6 @@ export default class SidebarC extends Vue {
               &.open
                 > ul.dropdown-menu
                   display: block !important
-
-
-    +between($breakpoint-md, $breakpoint-xl)
-      width: $offscreen-size
-
-      .sidebar-inner
-        .sidebar-logo
-          border-bottom-width: 1px
-          border-bottom-style: solid
-          +theme-color-diff(border-bottom-color, bgc-navbar, 6)
-          padding: 0 20px
-
-          > a
-            .logo
-              background-position: center left
-              width: 150px
-
-        .sidebar-menu
-          > li
-            > a
-              .title
-                display: inline-block
-
-          li
-            &.dropdown
-              .arrow
-                opacity: 1
-
-            &.open
-              > ul.dropdown-menu
-                display: block !important
-
 
     +to($breakpoint-md)
       left: 0

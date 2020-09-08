@@ -16,11 +16,13 @@
   transition: all 0.2s ease
 
   +between($breakpoint-md, $breakpoint-xl)
-    padding-left: $collapsed-size
-
+    padding-left: $offscreen-size
 
   +to($breakpoint-md)
     padding-left: 0
+    
+  +from($breakpoint-xl)
+    padding-left: $offscreen-size
 
 // ---------------------------------------------------------
 // @Main Content
@@ -66,10 +68,6 @@
 
     +to($breakpoint-md)
       padding-left: 0
-
-
-    +between($breakpoint-md, $breakpoint-xl)
-      padding-left: $offscreen-size
 
   .full-container
     left: $collapsed-size

@@ -10,7 +10,6 @@
       <div class="col-md-8">
         <full-calendar
           :options="calendarOptions"
-          :events="events"
         ></full-calendar>
       </div>
     </div>
@@ -201,15 +200,22 @@ export default class Calendar extends Vue {
 
 <style scoped lang="sass">
 @import '@/style/global.sass';
+
 .fc
-  background-color: $default-white
-  border: 1px solid $border-color
+  +theme(background-color, bgc-calendar)
+  +transition(all 0.1s ease-in)
+
+  margin: 0px 30px
+  padding: 20px
+  border-radius: 5px
+  box-shadow: 0 10px 20px rgba(0,0,0,0.04), 0 6px 6px rgba(0,0,0,0.04)
+  &:hover
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 6px 6px rgba(0,0,0,0.1)
 
   th
     text-align: center
     padding: 15px
     background-color: transparent
-    color: $default-text-color
     font-size: 12px
     text-transform: uppercase
     border-right-width: 0
@@ -279,4 +285,7 @@ export default class Calendar extends Vue {
 
   .fc-day-grid-event
     margin: 1px 5px 5px
+
+.fc-theme-standard td
+  border: 1px solid red !important
 </style>

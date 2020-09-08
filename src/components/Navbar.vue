@@ -13,7 +13,7 @@
           </a>
         </li>
         <!-- Search -->
-        <li v-if="false" class="search-box" :class="{ active: searchToggled }">
+        <li class="search-box" :class="{ active: searchToggled }">
           <a class="search-toggle no-pdd-right" @click.prevent="toggleSearch">
             <i class="search-icon icon-search pdd-right-10"></i>
             <i class="search-icon-close icon-close pdd-right-10"></i>
@@ -48,11 +48,11 @@
           </template>
           <template v-slot:entries>
             <notification-dropdown-element-c
-              headline="A new user signed up for the platform"
+              headline="A notification..."
               sub-headline="13 mins ago"
             />
             <notification-dropdown-element-c
-              headline="ERRID 777 arrived 10 minutes later than predicted in Berlin - Hauptbahnhof"
+              headline="Another notification in your inbox"
               sub-headline="20 mins ago"
             />
           </template>
@@ -134,18 +134,15 @@ export default class NavigationBarC extends Vue {
   display: block
   margin-bottom: 0
   padding: 0
+  transition: all 0.2s ease
   position: fixed
   // transition: all 0.2s ease
-  // width: calc(100% - #{$offscreen-size})
-  width: 100%
-  z-index: 800
   width: calc(100% - #{$offscreen-size})
+  //width: 100%
+  z-index: 800
 
   +to($breakpoint-md)
     width: 100%
-
-  +between($breakpoint-md, $breakpoint-xl)
-    width: calc(100% - #{$collapsed-size})
 
   .header-container
     +clearfix
@@ -185,7 +182,7 @@ export default class NavigationBarC extends Vue {
 
     .nav-left
       float: left
-      width: calc(100% - 750px)
+      width: calc(100% - 160px)
       padding-left: 15px
       transition: 0.2s ease
       li
@@ -196,8 +193,8 @@ export default class NavigationBarC extends Vue {
           cursor: pointer
 
     .nav-right
-      width: 750px
       float: right
+      width: 160px
       padding-right: 10px
 
   .search-box
@@ -214,7 +211,6 @@ export default class NavigationBarC extends Vue {
 
   .search-input
     display: none
-    width: calc(100% - 100px)
 
     &.active
       display: inline-block
@@ -229,13 +225,14 @@ export default class NavigationBarC extends Vue {
       margin-top: 12px
       outline: none
       padding: 5px
+      width: 200px
 
-      +to($breakpoint-sm)
-        width: 160px
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
 
-      +to($breakpoint-xs)
-        width: 85px
-
+      +between($breakpoint-o, $breakpoint-xs)
+        width: 90vw
 
       +placeholder
         color: lighten($default-text-color, 20%)
@@ -322,7 +319,4 @@ export default class NavigationBarC extends Vue {
     +to($breakpoint-md)
       width: 100%
 
-
-    +between($breakpoint-md, $breakpoint-xl)
-      width: calc(100% - #{$offscreen-size})
 </style>

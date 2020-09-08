@@ -56,9 +56,11 @@ export default class App extends Vue {
 </style>
 
 <style lang="sass">
-@import '@/style/global.sass';
+@import "@/style/global.sass"
 @import "@/style/spec/index.sass"
 @import "@/style/vendor/index.sass"
+
+@include scrollbars(.3em, slategray)
 
 .ps__rail-y
   right: 0 !important
@@ -72,7 +74,7 @@ export default class App extends Vue {
   width: 100%
 
 #nprogress .bar
-  background: #42b983
+  +theme(background-color, bgc-progressbar)
   height: 3px
 
 #app
@@ -80,22 +82,4 @@ export default class App extends Vue {
   +theme(background-color, bgc-body)
   +theme(color, c-default-text)
 
-/* width */
-::-webkit-scrollbar
-  width: 8px
-  height: 8px
-
-/* Track */
-::-webkit-scrollbar-track
-  box-shadow: inset 0 0 5px grey
-  border-radius: 10px
-
-/* Handle */
-::-webkit-scrollbar-thumb
-  +theme(background-color, bgc-scrollbar)
-  border-radius: 5px
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover
-  +theme-color-diff(background-color, bgc-scrollbar, 10)
 </style>

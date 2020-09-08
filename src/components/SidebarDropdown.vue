@@ -14,12 +14,12 @@
         <slot name="icon"></slot>
       </span>
       <span class="title"> {{ title }} </span>
-      <span class="arrow">
+      <span class="arrow" :class="{arrowR: open}">
         <i class="icon-angle-right"></i>
       </span>
     </a>
     <!-- Dropdown menu entries -->
-    <div class="collapse" :id="uuid">
+    <div :class="{collapse: !open}" :id="uuid">
       <ul class="dropdown-menu">
         <slot name="entries"></slot>
       </ul>
@@ -48,4 +48,11 @@ export default class SidebarDropdownC extends Vue {
 
 <style scoped lang="sass">
 @import '@/style/global.sass';
+
+.arrow:hover
+  transform: rotate(45deg)
+
+.arrowR
+  transform: rotate(90deg)
+
 </style>

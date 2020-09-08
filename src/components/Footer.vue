@@ -20,8 +20,12 @@ export default class FooterC extends Vue {}
 @import '@/style/global.sass';
 footer
   z-index: 1000
+  height: $footer-height
   +theme-color-diff(background-color, bgc-content, 0)
   border-top-width: 1px
   border-top-style: solid
   +theme-color-diff(border-top-color, bgc-navbar, 0)
+  a
+    +theme-color-diff(color,c-default-text, 30)
+    
 </style>

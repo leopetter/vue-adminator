@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h4 v-if="title" class="pos-r m-0">{{ title }}</h4>
+    <h4 v-if="title" class="pos-r mL-20">{{ title }}</h4>
     <div
       v-masonry
       item-selector=".item"
@@ -8,7 +8,7 @@
       :percentPosition="true"
       class="row gap-20 pos-r"
     >
-      <div class="masonry-sizer col-md-6"></div>
+      <div class="masonry-sizer col-md-12"></div>
       <slot></slot>
     </div>
   </div>
@@ -24,7 +24,9 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 export default class MasonryLayoutC extends Vue {
   @Prop() private title!: string;
   mounted() {
-    this.$redrawVueMasonry();
+    setTimeout(() => { 
+      this.$redrawVueMasonry();
+     }, 3000);
   }
 }
 </script>

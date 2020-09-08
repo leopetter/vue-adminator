@@ -1,7 +1,7 @@
 <template>
-  <li class="notifications dropdown">
+  <li class="notifications dropdown" :class="{collapse: !open}" v-click-outside-close>
     <!-- Toggle -->
-    <a data-toggle="dropdown">
+    <a data-toggle="dropdown" @click="open = !open">
       <span class="counter">{{ number }}</span>
       <a class="dropdown-toggle no-after">
         <slot name="icon"></slot>
@@ -47,6 +47,7 @@ export default class NotificationDropdownC extends Vue {
   get uuid() {
     return this.title.replace(/\s+/g, "");
   }
+
 }
 </script>
 
@@ -70,14 +71,14 @@ export default class NotificationDropdownC extends Vue {
     right: 0
     min-width: 350px
     padding: 0
-
-    +to($breakpoint-sm)
-      max-width: 300px
-
     display: block
     margin: 0
     transform-origin: top right
-    transform: scale(0, 0)
+    transform: scale(1,1)
+    transition: all 0.5s ease
+
+    +to($breakpoint-sm)
+      max-width: 300px
 
     .divider
       border-bottom-width: 1px
@@ -114,7 +115,7 @@ export default class NotificationDropdownC extends Vue {
     left: calc(50% - 20px)
     bottom: calc(50% - 17px)
 
-.show
+.collapse
   .dropdown-menu
-    transform: scale(1, 1)
+    transform: scale(0,0)
 </style>

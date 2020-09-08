@@ -75,6 +75,4 @@ export default class EmailContentC extends Vue {
 
 <style scoped lang="sass">
 @import '@/style/global.sass';
-.btn
-  color: inherit
 </style>

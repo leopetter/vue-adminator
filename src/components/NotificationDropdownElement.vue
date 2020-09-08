@@ -1,7 +1,7 @@
 <template>
   <navigation-bar-dropdown-element-c>
     <template v-slot:icon>
-      <img class="w-3r bdrs-50p" :src="image" />
+      <i class="icon-envelope"></i>
     </template>
     <template v-slot:content>
       <span>

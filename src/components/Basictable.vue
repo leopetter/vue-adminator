@@ -132,6 +132,9 @@ table
     &.no-footer
       border-bottom: 1px solid $border-color
       margin-bottom: 20px
+      
+  th, td
+    border: none
 
 .table
   color: inherit
@@ -201,7 +204,8 @@ table
       border-radius: 2px
       margin-right: 10px
       transition: all 0.2s ease-in-out
-      text-decoration: none
+      text-decoration: 
+      background-color: green !important
 
       &.next,
       &.previous,
@@ -233,4 +237,11 @@ table
   .status
     width: 5px
     height: 5px
+
+.table-bordered
+  th, td
+    border: 1px solid
+    +theme(border-color, bc-tables)  
+
+
 </style>

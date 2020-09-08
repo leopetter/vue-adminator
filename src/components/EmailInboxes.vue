@@ -27,7 +27,7 @@
                 <div class="peer">
                   <span
                     class="badge badge-pill"
-                    :class="'bgc-' + inbox.color + '-50'"
+                    :class="'bgc-' + inbox.color + '-400'"
                     >{{ inbox.messageCount }}</span
                   >
                 </div>
@@ -58,4 +58,10 @@ export default class EmailInboxesC extends Vue {
 .nav-link.router-link-excact-active
   font-weight: bold
   color: #f44336 !important
+
+.badge-pill
+  color: white  
+
+.nav-link
+  +theme(color, c-default-link)
 </style>

@@ -18,7 +18,7 @@
       <footer-c>
         <span id="footer">
           MIT &copy; by
-          <a href="https://github.com/romnnn">romnn</a>
+          <a href="https://github.com/romnnn">romnn</a> & <a href="https://github.com/leopetter">leopetter</a> 
           based on
           <a href="https://colorlib.com" title="Colorlib"
             >Colorlib <span class="icon icon-new-window"></span
@@ -62,11 +62,13 @@ export default class Adminator extends Vue {
   vertical-align: middle
   display: inline-block
 
+
 .page-container
   height: 100%
 
 .main-content
+  min-height: 100%
   position: relative
-  overflow-x: hidden
+  overflow: hidden
   +theme(background-color, bgc-content)
 </style>

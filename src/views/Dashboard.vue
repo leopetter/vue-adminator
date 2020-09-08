@@ -106,7 +106,6 @@
     <!-- Site Visits -->
     <masonry-layout-tile-c
       section="Site Visits"
-      :layout-style="{ 'col-md-12': true }"
     >
       <div class="peer">
         <div class="layers">
@@ -327,7 +326,9 @@
     </div>
     -->
 
-    <masonry-layout-tile-c section="Monthly Stats">
+    <masonry-layout-tile-c
+      section="Sales"
+    >
       <div class="layer">
         <line-chart-c
           :height="200"
@@ -435,7 +436,7 @@
     <masonry-layout-tile-c :wrap="false">
       <sales-report-c v-bind:sales="sales" />
       <div class="ta-c bd bgc-light-blue-900 w-100 p-20">
-        <a href="#sales">Check all the sales</a>
+        <a href="#sales" class="c-white">Check all the sales</a>
       </div>
     </masonry-layout-tile-c>
 
@@ -452,7 +453,7 @@
           />
           <button
             type="button"
-            class="btn btn-primary bdrs-50p w-2r p-0 h-2r pos-a r-1 t-1"
+            class="btn btn-primary bdrs-50p w-2r p-0 h-2r pos-a r-3 t-3"
           >
             <i class="c-white icon-location-arrow"></i>
           </button>

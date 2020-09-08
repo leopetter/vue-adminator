@@ -1,4 +1,7 @@
-$base-color-dark: #161616;
+$base-color-dark: #121212;
+$base-color-second-dark: mix(white, $base-color-dark,  5%);
+$base-color-light: #fff;
+$base-color-second-light: mix(black, $base-color-light, 9%);
 $base-color-dark-inactive-sidebar: rgb(102, 102, 102); // rgb(53, 53, 53);
 $base-color-light-inactive-sidebar: rgb(122, 122, 122);
 $primary-color-dark: #00d587;
@@ -19,40 +22,44 @@ $themes: (
         /*
         Light theme (default)
         */
-        'bgc-body': #FFF,
-        'bgc-sidebar': #FFF,
-        'bgc-navbar': #FFF,
-        'bgc-content': #FFF,
+        'bgc-body': $base-color-second-light,
+        'bgc-sidebar': $base-color-second-light,
+        'bgc-navbar': $base-color-second-light,
+        'bgc-content': $base-color-light,
         'bgc-sidebar-active': #FFF,
-        'bgc-btn-default': #f7521e,
+        'bgc-progressbar': $primary-color-light,
+        'bgc-btn-default': $primary-color-light,
         'c-default-text': #000,
         'c-delay-alert': rgb(247, 0, 84),
-        'c-delay-warning': #f7521e,
+        'c-delay-warning': $primary-color-light,
         'c-delay-fine': rgb(111, 221, 20),
-        'c-accent-text': #f7521e,
+        'c-accent-text': $primary-color-light,
         'c-logo-text': #000,
         'c-map-position-text': #000,
-        'c-sidebar-dot': #f7521e,
-        'c-sidebar-text': #f7521e,
-        'c-sidebar-icon-active': #f7521e,
+        'c-sidebar-dot': $primary-color-light,
+        'c-sidebar-text': $primary-color-light,
+        'c-sidebar-icon-active': $primary-color-light,
         'c-sidebar-icon-dashboard': $base-color-light-inactive-sidebar,
         'c-sidebar-icon-manage': $base-color-light-inactive-sidebar,
         'c-sidebar-icon-feed': $base-color-light-inactive-sidebar,
         'c-sidebar-icon-map': $base-color-light-inactive-sidebar,
-        'bgc-table-button': #f7521e,
+        'bgc-table-button': $primary-color-light,
         'c-table-text': #fff,
-        'bgc-scrollbar': #f7521e,
-        'c-default-link': $secondary-color,
+        'bgc-scrollbar': $primary-color-light,
+        'c-default-link': #3f3f3f,
+        'bgc-calendar': mix(black, $base-color-light,  3%),
+        'bc-tables': $base-color-second-dark
     ),
     'dark': (
         /*
         Dark theme (default)
         */
-        'bgc-body': $base-color-dark,
-        'bgc-sidebar': $base-color-dark,
-        'bgc-navbar': $base-color-dark,
-        'bgc-content': #132c3f,
+        'bgc-body': $base-color-second-dark,
+        'bgc-sidebar': $base-color-second-dark,
+        'bgc-navbar': $base-color-second-dark,
+        'bgc-content': $base-color-dark,
         'bgc-sidebar-active': $base-color-dark,
+        'bgc-progressbar': $primary-color-dark,
         'bgc-btn-default': rgb(247, 99, 0),
         'c-default-text': #fff,
         'c-delay-alert': rgb(247, 29, 0),
@@ -71,7 +78,9 @@ $themes: (
         'bgc-table-button': $primary-color-dark,
         'c-table-text': $base-color-dark,
         'bgc-scrollbar': $primary-color-dark,
-        'c-default-link': $secondary-color,
+        'c-default-link': #929292,
+        'bgc-calendar': mix(white, $base-color-dark,  3%),
+        'bc-tables': $base-color-second-light
     )
 ) !default;
 
@@ -206,6 +215,33 @@ $themes: (
     }
   }
 }
+
+@mixin scrollbars($size, $foreground-color, $background-color: mix($foreground-color, white, 50%)) {
+  ::-webkit-scrollbar {
+      width:  $size;
+      height: $size;
+  }
+
+  ::-webkit-scrollbar-thumb {
+      background: $foreground-color;
+  }
+
+  ::-webkit-scrollbar-track {
+      background: $background-color;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover{
+   background: mix($foreground-color, black, 50%)
+  }
+
+  // For Internet Explorer
+  body {
+    scrollbar-face-color: $foreground-color;
+    scrollbar-track-color: $background-color;
+  }
+}
+
 
 @mixin for-size($range) {
   $phone-upper-boundary: 600px;

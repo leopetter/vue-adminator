@@ -1,9 +1,9 @@
 <template>
-  <li class="dropdown">
+  <li class="dropdown" :class="{collapse: !open}" v-click-outside-close>
     <!-- User account dropdown toggle -->
     <a
       class="dropdown-toggle no-after peers fxw-nw ai-c"
-      data-toggle="dropdown"
+      data-toggle="dropdown" @click="open = !open"
     >
       <div class="peer mR-10 user-icon-container">
         <!--<img class="w-2r bdrs-50p" :src="picture" alt="" />-->
@@ -94,9 +94,17 @@ export default class AccountDropdownC extends Vue {
   .dropdown-menu
     +theme(background-color, bgc-navbar)
     line-height: 35px
-    margin-left: -50px
+    display: block
+    margin-left: -100px
+    transition: all 0.5s ease
+    transform-origin: top right
+    transform: scale(1,1)
     li
       padding: 2px 12px
       &:hover
         +theme-color-diff(background-color, bgc-navbar, 10)
+
+.collapse
+  .dropdown-menu
+    transform: scale(0,0)
 </style>
