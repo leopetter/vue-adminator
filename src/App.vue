@@ -31,34 +31,25 @@ export default class App extends Vue {
 }
 </script>
 
-<style lang="scss">
-@import "~bootstrap";
-@import "~bootstrap-vue";
-
-@font-face {
-  font-family: "themify";
-  src: url(~themify-icons/themify-icons/fonts/themify.eot?-fvbane);
-  src: url(~themify-icons/themify-icons/fonts/themify.eot?#iefix-fvbane)
-      format("embedded-opentype"),
-    url(~themify-icons/themify-icons/fonts/themify.woff?-fvbane) format("woff"),
-    url(~themify-icons/themify-icons/fonts/themify.ttf?-fvbane)
-      format("truetype"),
-    url(~themify-icons/themify-icons/fonts/themify.svg?-fvbane#themify)
-      format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
-@import "~themify-icons/themify-icons/variables";
-@import "~themify-icons/themify-icons/mixins";
-@import "~themify-icons/themify-icons/core";
-@import "~themify-icons/themify-icons/extras";
-@import "~themify-icons/themify-icons/icons";
-</style>
-
 <style lang="sass">
 @import "@/style/global.sass"
 @import "@/style/spec/index.sass"
 @import "@/style/vendor/index.sass"
+@import ~bootstrap
+@import ~bootstrap-vue
+
+@font-face
+  font-family: "themify"
+  src: url(~themify-icons/themify-icons/fonts/themify.eot?-fvbane)
+  src: url(~themify-icons/themify-icons/fonts/themify.eot?#iefix-fvbane) format("embedded-opentype"), url(~themify-icons/themify-icons/fonts/themify.woff?-fvbane) format("woff"), url(~themify-icons/themify-icons/fonts/themify.ttf?-fvbane) format("truetype"), url(~themify-icons/themify-icons/fonts/themify.svg?-fvbane#themify) format("svg")
+  font-weight: normal
+  font-style: normal
+
+@import ~themify-icons/themify-icons/variables
+@import ~themify-icons/themify-icons/mixins
+@import ~themify-icons/themify-icons/core
+@import ~themify-icons/themify-icons/extras
+@import ~themify-icons/themify-icons/icons
 
 @include scrollbars(.3em, slategray)
 
