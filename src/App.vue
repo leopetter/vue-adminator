@@ -34,9 +34,15 @@ export default class App extends Vue {
 <style lang="sass">
 @import "@/style/global.sass"
 @import "@/style/spec/index.sass"
-@import "@/style/vendor/index.sass"
+@import "@/style/vendor/index.sass" 
 @import ~bootstrap
 @import ~bootstrap-vue
+
+@import "~themify-icons-sass/themify-icons/variables"
+@import "~themify-icons-sass/themify-icons/mixins"
+@import "~themify-icons-sass/themify-icons/core"
+@import "~themify-icons-sass/themify-icons/extras"
+@import "~themify-icons-sass/themify-icons/icons"
 
 @font-face
   font-family: "themify"
@@ -44,12 +50,6 @@ export default class App extends Vue {
   src: url(~themify-icons/themify-icons/fonts/themify.eot?#iefix-fvbane) format("embedded-opentype"), url(~themify-icons/themify-icons/fonts/themify.woff?-fvbane) format("woff"), url(~themify-icons/themify-icons/fonts/themify.ttf?-fvbane) format("truetype"), url(~themify-icons/themify-icons/fonts/themify.svg?-fvbane#themify) format("svg")
   font-weight: normal
   font-style: normal
-
-@import ~themify-icons/themify-icons/variables
-@import ~themify-icons/themify-icons/mixins
-@import ~themify-icons/themify-icons/core
-@import ~themify-icons/themify-icons/extras
-@import ~themify-icons/themify-icons/icons
 
 @include scrollbars(.3em, slategray)
 

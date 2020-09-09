@@ -182,7 +182,7 @@ export default class NavigationBarC extends Vue {
 
     .nav-left
       float: left
-      width: calc(100% - 160px)
+      width: calc(100% - 200px)
       padding-left: 15px
       transition: 0.2s ease
       li
@@ -194,7 +194,7 @@ export default class NavigationBarC extends Vue {
 
     .nav-right
       float: right
-      width: 160px
+      width: 200px
       padding-right: 10px
 
   .search-box
