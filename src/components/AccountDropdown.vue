@@ -57,7 +57,7 @@ export default class AccountDropdownC extends Vue {
   protected open = false;
 
   logout() {
-    AuthModule.logout();
+    AuthModule.authLogout();
   }
 }
 </script>

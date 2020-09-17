@@ -5,7 +5,7 @@
     >
       <div class="pos-a centerXY">
         <div class="landing-logo pos-r">
-          <img class="pos-r" src="../assets/images/logo.png" alt="" />
+          <img class="pos-r" src="../assets/images/logo_gray.png" alt="" />
           <p>
             <router-link to="/" class="landing-name pos-r">{{
               appName

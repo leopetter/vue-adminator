@@ -5,31 +5,22 @@ import {
   Action,
   getModule
 } from "vuex-module-decorators";
+import { AuthenticationClient } from "@/generated/models/grpc/AuthServiceClientPb";
 import store from "@/store";
 import router from "@/router";
 import Vue from "vue";
+import { Error, StatusCode } from "grpc-web";
+import { UserManagementModule } from "./usermgmt";
+import {
+  LoginRequest,
+  Token
+} from "@/generated/models/grpc/auth_pb";
+import { UnaryAuthInterceptor, StreamAuthInterceptor } from "./interceptor";
 
-export interface UserLoginRequest {
-  email: string;
-  password: string;
-  remember: boolean;
-}
-
-export interface AuthenticationToken {
-  token: string;
-  userID: number;
-  expiration: number;
-}
-
-export interface TokenValidationRequest {
-  token: string;
-}
-
-export interface AuthState {
-  authenticationAPI: string;
-  signupAPI: string;
+export interface IAuthState {
+  client: AuthenticationClient;
   authToken: string;
-  userID: number | null;
+  userID: string;
   authState: AuthenticationState | null;
   appAllowsRegister: boolean;
 }
@@ -41,12 +32,14 @@ enum AuthenticationState {
 }
 
 @Module({ dynamic: true, store, name: "auth" })
-class Auth extends VuexModule implements AuthState {
-  public authenticationAPI = "http://192.168.1.7:5000/api/admin/v1/auth/login";
-  public signupAPI = "http://192.168.1.7:5000/api/admin/v1/auth/signup";
+class Auth extends VuexModule implements IAuthState {
+  public client = new AuthenticationClient("/api/grpc/auth", null, {
+    unaryInterceptors: [new UnaryAuthInterceptor()],
+    streamInterceptors: [new StreamAuthInterceptor()]
+  });
   public appAllowsRegister = false;
   public authToken = "";
-  public userID: number | null = null;
+  public userID = "";
   public authState: AuthenticationState | null = null;
 
   get isAuthenticated(): boolean {
@@ -65,85 +58,62 @@ class Auth extends VuexModule implements AuthState {
   @Mutation
   public setAuthToken(token: string): void {
     this.authToken = token;
+    Vue.cookies.set("user-token", token, { expires: Infinity });
   }
 
   @Mutation
-  public setUserID(userID: number | null): void {
+  public setUserID(userID: string): void {
     this.userID = userID;
   }
 
   @Action({ rawError: true })
   public async authRequest(
-    request: UserLoginRequest
-  ): Promise<AuthenticationToken> {
-    return new Promise<AuthenticationToken>((resolve, reject) => {
+    request: LoginRequest
+  ): Promise<Token> {
+    return new Promise<Token>((resolve, reject) => {
       this.setAuthState(AuthenticationState.Loading);
-      Vue.axios.post(this.authenticationAPI, request).then(
-        response => {
-          const token = response.data.token;
-          const userID = response.data.userID;
+      this.client.login(request, undefined, (err: any, response: { getToken: () => any; getUserId: () => any; getExpiration: () => any; getEmail: () => any; }) => {
+        if (err) {
+          this.setAuthState(AuthenticationState.Failed);
+          Vue.cookies.remove("user-token");
+          Vue.cookies.remove("user-id");
+          Vue.cookies.remove("user-email");
+          reject(err);
+        } else {
+          let token = response.getToken();
+          let userID = response.getUserId();
           this.setAuthToken(token);
           this.setUserID(userID?.getId() ?? "");
           this.setAuthState(AuthenticationState.Authenticated);
-          Vue.cookies.set("user-token", token, {
-            expires: response.data.expiration
-          });
-          Vue.cookies.set("user-id", userID, {
-            expires: response.data.expiration
-          });
+          if (request.getRemember() == true) {
+            Vue.cookies.set("user-token", token, {
+              expires: response.getExpiration()
+            });
+            Vue.cookies.set("user-email", response.getEmail(), {
+              expires: response.getExpiration()
+            });
+            Vue.cookies.set("user-id", userID?.getId() ?? "", {
+              expires: response.getExpiration()
+            });
+          }
           Vue.axios.defaults.headers.common["Authorization"] = token;
-          resolve(response.data);
-        },
-        err => {
-          this.setAuthState(AuthenticationState.Failed);
-          Vue.cookies.remove("user-token");
-          reject(err);
+          resolve(response);
         }
-      );
+      });
     });
   }
 
   @Action({ rawError: true })
-  public async checkToken(): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-      const request: TokenValidationRequest = {
-        token: this.authToken
-      };
-      Vue.axios.post(this.authenticationAPI, request).then(
-        () => resolve(true),
-        () => {
-          this.logout();
-          router.push("/").catch(() => {
-            // Ignore
-          });
-          reject(false);
-        }
-      );
-    });
-  }
-
-  /*
-  @Action({ rawError: true })
-  public async checkUnauthenticated(error: Error): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      if (error != undefined) {
-        if (error.code == StatusCode.UNAUTHENTICATED) this.checkToken();
-      }
-    });
-  }
-  */
-
-  @Action({ rawError: true })
-  public logout() {
+  public authLogout() {
     Vue.cookies.remove("user-token");
+    Vue.cookies.remove("user-email");
     Vue.cookies.remove("user-id");
     delete Vue.axios.defaults.headers.common["Authorization"];
     this.setAuthToken("");
-    this.setUserID(null);
+    this.setUserID("");
+    UserManagementModule.setCurrentUserEmail("");
     this.setAuthState(null);
-    router.push({ name: "login" }).catch(() => {
-      // Ignore
-    });
+    router.push({ name: "login" });
   }
 }
 

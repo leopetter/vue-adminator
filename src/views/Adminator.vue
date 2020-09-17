@@ -1,7 +1,7 @@
 <template>
   <div class="app" :class="{ 'is-collapsed': isCollapsed }">
     <!-- Sidebar -->
-    <sidebar-c title="Vue Adminator" />
+    <sidebar-c title="Upbound Admin" />
 
     <div class="page-container">
       <!-- Top Navigation bar -->

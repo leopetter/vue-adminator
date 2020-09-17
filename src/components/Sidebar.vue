@@ -10,8 +10,8 @@
                 <div class="peer">
                   <div class="logo">
                     <img
-                      src="../assets/images/logo.png"
-                      alt=""
+                      :src="theme == 1 ? require(`../assets/images/logo_white.png`) : require(`../assets/images/logo_gray.png`)"
+                      alt="Logo"
                     />
                   </div>
                 </div>
@@ -33,55 +33,97 @@
 
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu pos-r">
-        <!-- Dashboard -->
+        <sidebar-element-c title="Home" :route="{ name: 'home' }">
+          <template v-slot:icon>
+            <i class="c-blue-500 icon-home"></i>
+          </template>
+        </sidebar-element-c>
+
+        <sidebar-element-c title="Stock Management" :route="{ name: 'stockmgmt' }">
+          <template v-slot:icon>
+            <i class="c-light-blue-500 icon-music-alt"></i>
+          </template>
+        </sidebar-element-c>
+
+        <sidebar-element-c title="User Submissions" :route="{ name: 'usersubmissions' }">
+          <template v-slot:icon>
+            <i class="c-light-blue-500 icon-user"></i>
+          </template>
+        </sidebar-element-c>
+
+        <sidebar-element-c title="Order Management" :route="{ name: 'ordermgmt' }">
+          <template v-slot:icon>
+            <i class="c-light-blue-500 icon-package"></i>
+          </template>
+        </sidebar-element-c>
+
+        <sidebar-element-c title="Download Management" :route="{ name: 'downloadmgmt' }">
+          <template v-slot:icon>
+            <i class="c-light-blue-500 icon-download"></i>
+          </template>
+        </sidebar-element-c>
+
+        <sidebar-element-c title="Generate Files" :route="{ name: 'filegenerator' }">
+          <template v-slot:icon>
+            <i class="c-light-blue-500 icon-files"></i>
+          </template>
+        </sidebar-element-c>
+
+        <sidebar-element-c title="E-mails" :route="{ name: 'emails' }">
+          <template v-slot:icon>
+            <i class="c-light-blue-500 icon-email"></i>
+          </template>
+        </sidebar-element-c>
+        <!--
+
         <sidebar-element-c title="Dashboard" :route="{ name: 'dashboard' }">
           <template v-slot:icon>
             <i class="c-blue-500 icon-home"></i>
           </template>
         </sidebar-element-c>
-        <!-- Email -->
+
         <sidebar-element-c title="Email" :route="{ name: 'inbox' }">
           <template v-slot:icon>
             <i class="c-brown-500 icon-email"></i>
           </template>
         </sidebar-element-c>
-        <!-- Compose -->
+
         <sidebar-element-c title="Compose" :route="{ name: 'compose' }">
           <template v-slot:icon>
             <i class="c-blue-500 icon-share"></i>
           </template>
         </sidebar-element-c>
-        <!-- Calendar -->
+
         <sidebar-element-c title="Calendar" :route="{ name: 'calendar' }">
           <template v-slot:icon>
             <i class="c-deep-orange-500 icon-calendar"></i>
           </template>
         </sidebar-element-c>
-        <!-- Chat -->
+
         <sidebar-element-c title="Chat" :route="{ name: 'chat' }">
           <template v-slot:icon>
             <i class="c-deep-purple-500 icon-comment-alt"></i>
           </template>
         </sidebar-element-c>
-        <!-- Charts -->
+
         <sidebar-element-c title="Charts" :route="{ name: 'charts' }">
           <template v-slot:icon>
             <i class="c-indigo-500 icon-bar-chart"></i>
           </template>
         </sidebar-element-c>
-        <!-- Forms -->
+
         <sidebar-element-c title="Forms" :route="{ name: 'forms' }">
           <template v-slot:icon>
             <i class="c-light-blue-500 icon-pencil"></i>
           </template>
         </sidebar-element-c>
-        <!-- UI Elements -->
+
         <sidebar-element-c title="UI Elements" :route="{ name: 'ui' }">
           <template v-slot:icon>
             <i class="c-pink-500 icon-palette"></i>
           </template>
         </sidebar-element-c>
-        <!-- Tables -->
+
         <sidebar-dropdown-c title="Tables">
           <template v-slot:icon>
             <i class="c-pink-500 icon-palette"></i>
@@ -97,7 +139,7 @@
             />
           </template>
         </sidebar-dropdown-c>
-        <!-- Maps -->
+
         <sidebar-dropdown-c title="Maps">
           <template v-slot:icon>
             <i class="c-purple-500 icon-map"></i>
@@ -109,7 +151,7 @@
             />
           </template>
         </sidebar-dropdown-c>
-        <!-- Pages -->
+
         <sidebar-dropdown-c title="Pages">
           <template v-slot:icon>
             <i class="c-red-500 icon-files"></i>
@@ -137,7 +179,7 @@
             />
           </template>
         </sidebar-dropdown-c>
-        <!-- Multiple Levels -->
+
         <sidebar-dropdown-c title="Multiple Levels">
           <template v-slot:icon>
             <i class="c-teal-500 icon-view-list-alt"></i>
@@ -152,6 +194,7 @@
             </sidebar-dropdown-c>
           </template>
         </sidebar-dropdown-c>
+        -->
       </ul>
     </div>
   </div>
@@ -174,10 +217,13 @@ import { AppModule } from "../store/modules/app";
 })
 export default class SidebarC extends Vue {
   @Prop({ default: "Vue Adminator" }) private title!: string;
-  @Prop({ default: "@/assets/images/logo.png" }) private logo!: string;
 
   toggleSidebar() {
     AppModule.toggleCollapse();
+  }
+
+  get theme() {
+    return AppModule.theme;
   }
 }
 </script>

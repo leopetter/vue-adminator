@@ -12,7 +12,7 @@ const getThemeClass = (availableThemes: string[], theme: number): string => {
   return "theme-" + availableThemes[theme];
 };
 
-export interface AppState {
+export interface IAppState {
   appName: string;
   isCollapsed: boolean;
   isLoading: boolean;
@@ -32,8 +32,8 @@ const internalSetTheme = (themeIndex: number, themeClass: string) => {
 };
 
 @Module({ dynamic: true, store, name: "app" })
-class App extends VuexModule implements AppState {
-  public appName = "Vue Adminator";
+class App extends VuexModule implements IAppState {
+  public appName = "Upbound Admin Dashboard";
   public isCollapsed = false;
   public isLoading = false;
   public availableThemes: string[] = ["light", "dark"];

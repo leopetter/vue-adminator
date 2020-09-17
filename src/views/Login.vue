@@ -65,6 +65,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { AuthModule } from "../store/modules/auth";
+import { LoginRequest } from "@/generated/protobuf/models/grpc/auth_pb";
 
 @Component({
   name: "Login",
@@ -77,7 +78,7 @@ export default class Login extends Vue {
   protected hasError = false;
   protected isRedirecting = false;
   protected errorTitle = "Login failed";
-  protected errorMessage = "Check your email and password";
+  protected errorMessage = "Check your e-mail and password";
 
   get appAllowsRegister() {
     return AuthModule.appAllowsRegister;

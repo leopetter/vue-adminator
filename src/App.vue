@@ -12,6 +12,7 @@ import { Component, Vue } from "vue-property-decorator";
 import NprogressContainer from "vue-nprogress/src/NprogressContainer.vue";
 import { COOKIE_THEME } from "./constants";
 import { AppModule } from "./store/modules/app";
+import { AuthModule } from "./store/modules/auth";
 
 @Component({
   name: "App",
@@ -24,41 +25,47 @@ export default class App extends Vue {
     const theme: number = parseInt(
       (this.$cookies.get(COOKIE_THEME) ?? "").toString()
     );
+
     if (!isNaN(theme)) {
       AppModule.setTheme(theme);
     }
+
+    this.axios.interceptors.response.use(undefined, err => {
+      return new Promise((resolve, reject) => {
+        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+          // if you ever get an unauthorized, logout the user
+          AuthModule.authLogout();
+          // you can also redirect to /login if needed !
+          this.$router.push("/404");
+        }
+        throw err;
+      });
+    });
+
+    this.$redrawVueMasonry();
   }
 }
 </script>
 
-<style lang="scss">
-@import "~bootstrap";
-@import "~bootstrap-vue";
-
-@font-face {
-  font-family: "themify";
-  src: url(~themify-icons/themify-icons/fonts/themify.eot?-fvbane);
-  src: url(~themify-icons/themify-icons/fonts/themify.eot?#iefix-fvbane)
-      format("embedded-opentype"),
-    url(~themify-icons/themify-icons/fonts/themify.woff?-fvbane) format("woff"),
-    url(~themify-icons/themify-icons/fonts/themify.ttf?-fvbane)
-      format("truetype"),
-    url(~themify-icons/themify-icons/fonts/themify.svg?-fvbane#themify)
-      format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
-@import "~themify-icons/themify-icons/variables";
-@import "~themify-icons/themify-icons/mixins";
-@import "~themify-icons/themify-icons/core";
-@import "~themify-icons/themify-icons/extras";
-@import "~themify-icons/themify-icons/icons";
-</style>
-
 <style lang="sass">
 @import "@/style/global.sass"
 @import "@/style/spec/index.sass"
-@import "@/style/vendor/index.sass"
+@import "@/style/vendor/index.sass" 
+@import ~bootstrap
+@import ~bootstrap-vue
+
+@import "~themify-icons-sass/themify-icons/variables"
+@import "~themify-icons-sass/themify-icons/mixins"
+@import "~themify-icons-sass/themify-icons/core"
+@import "~themify-icons-sass/themify-icons/extras"
+@import "~themify-icons-sass/themify-icons/icons"
+
+@font-face
+  font-family: "themify"
+  src: url(~themify-icons-sass/themify-icons/fonts/themify.eot?-fvbane)
+  src: url(~themify-icons-sass/themify-icons/fonts/themify.eot?#iefix-fvbane) format("embedded-opentype"), url(~themify-icons/themify-icons/fonts/themify.woff?-fvbane) format("woff"), url(~themify-icons/themify-icons/fonts/themify.ttf?-fvbane) format("truetype"), url(~themify-icons/themify-icons/fonts/themify.svg?-fvbane#themify) format("svg")
+  font-weight: normal
+  font-style: normal
 
 @include scrollbars(.3em, slategray)
 
