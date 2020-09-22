@@ -41,31 +41,31 @@
 
         <sidebar-element-c title="Stock Management" :route="{ name: 'stockmgmt' }">
           <template v-slot:icon>
-            <i class="c-light-blue-500 icon-music-alt"></i>
+            <i class="c-purple-500 icon-music-alt"></i>
           </template>
         </sidebar-element-c>
 
         <sidebar-element-c title="User Submissions" :route="{ name: 'usersubmissions' }">
           <template v-slot:icon>
-            <i class="c-light-blue-500 icon-user"></i>
+            <i class="c-red-500 icon-user"></i>
           </template>
         </sidebar-element-c>
 
         <sidebar-element-c title="Order Management" :route="{ name: 'ordermgmt' }">
           <template v-slot:icon>
-            <i class="c-light-blue-500 icon-package"></i>
+            <i class="c-orange-500 icon-package"></i>
           </template>
         </sidebar-element-c>
 
         <sidebar-element-c title="Download Management" :route="{ name: 'downloadmgmt' }">
           <template v-slot:icon>
-            <i class="c-light-blue-500 icon-download"></i>
+            <i class="c-yellow-500 icon-download"></i>
           </template>
         </sidebar-element-c>
 
         <sidebar-element-c title="Generate Files" :route="{ name: 'filegenerator' }">
           <template v-slot:icon>
-            <i class="c-light-blue-500 icon-files"></i>
+            <i class="c-green-500 icon-files"></i>
           </template>
         </sidebar-element-c>
 

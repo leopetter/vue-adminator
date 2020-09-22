@@ -65,7 +65,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { AuthModule } from "../store/modules/auth";
-import { LoginRequest } from "@/generated/protobuf/models/grpc/auth_pb";
+import { LoginRequest } from "../generated/models/grpc/auth_pb";
 
 @Component({
   name: "Login",
@@ -90,11 +90,12 @@ export default class Login extends Vue {
 
   login() {
     this.hasError = false;
-    AuthModule.authRequest({
-      email: this.email,
-      password: this.password,
-      remember: this.shouldRemember
-    }).then(
+    AuthModule.authRequest(
+      new LoginRequest()
+        .setEmail(this.email)
+        .setPassword(this.password)
+        .setRemember(this.shouldRemember)
+    ).then(
       () => {
         this.isRedirecting = true;
         setTimeout(() => {

@@ -1,5 +1,5 @@
 <template>
-  <li class="dropdown" :class="{collapse: !open}" v-click-outside-close>
+  <li class="dropdown" :class="{collapseAccount: !open}" v-click-outside-close>
     <!-- User account dropdown toggle -->
     <a
       class="dropdown-toggle no-after peers fxw-nw ai-c"
@@ -104,7 +104,7 @@ export default class AccountDropdownC extends Vue {
       &:hover
         +theme-color-diff(background-color, bgc-navbar, 10)
 
-.collapse
+.collapseAccount
   .dropdown-menu
     transform: scale(0,0)
 </style>

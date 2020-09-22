@@ -72,7 +72,7 @@ class Auth extends VuexModule implements IAuthState {
   ): Promise<Token> {
     return new Promise<Token>((resolve, reject) => {
       this.setAuthState(AuthenticationState.Loading);
-      this.client.login(request, undefined, (err: any, response: { getToken: () => any; getUserId: () => any; getExpiration: () => any; getEmail: () => any; }) => {
+      this.client.login(request, null, (err: any, response: { getToken: () => any; getUserId: () => any; getExpiration: () => any; getEmail: () => any; }) => {
         if (err) {
           this.setAuthState(AuthenticationState.Failed);
           Vue.cookies.remove("user-token");

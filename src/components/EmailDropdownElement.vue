@@ -41,9 +41,6 @@ export default class EmailDropdownElementC extends Vue {
 
   protected open = false;
 
-  logout() {
-    AuthModule.logout();
-  }
 }
 </script>
 

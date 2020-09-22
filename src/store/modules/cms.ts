@@ -1,4 +1,5 @@
 import { ContentManagementClient } from "@/generated/models/grpc/CmsServiceClientPb";
+import { StockQueryClient } from "@/generated/models/grpc/StockServiceClientPb";
 import {
   VuexModule,
   Module,
@@ -27,10 +28,10 @@ import {
   ListStockRequestsRequest,
   DeleteStockRequestRequest,
   DownloadStockRequestAssetsRequest,
-  StockRequestAsset,
   StockRequestAssets,
-  AddStockResult
-} from "@/generated/models/grpc/CmsServiceClientPb";
+  AddStockResult,
+  StockRequestAsset
+} from "@/generated/models/grpc/cms_pb";
 import {
   CheckStockSummary,
   AddStockRequest,
@@ -47,24 +48,28 @@ import {
 import {
   Download
 } from "@/generated/models/download/download_pb";
-import { Error, StatusCode } from "grpc-web";
+import { Error, Status, ClientReadableStream } from "grpc-web";
 import { AuthModule } from "./auth";
 import { MailData } from '@/generated/models/grpc/internal/mail_pb';
 import { Empty } from '@/generated/models/grpc/results_pb';
+import { StockItemDescriptor } from '@/generated/models/grpc/stock_pb';
+import { Stock } from '@/generated/models/stock/stock_pb';
 
 export interface IContentManagementState {
   client: ContentManagementClient;
+  stockQueryClient: StockQueryClient;
 }
 
 @Module({ dynamic: true, store, name: "user" })
 class ContentManagement extends VuexModule implements IContentManagementState {
   public client = new ContentManagementClient("/api/grpc/cms", null, null);
+  public stockQueryClient = new StockQueryClient("/api/grpc/stock", null, null);
 
   /* Manage beats and audio stock data */
   @Action({ rawError: true })
   public async rankStock(): Promise<Empty> {
     return new Promise<Empty>((resolve, reject) => {
-      this.client.rankStock(AuthModule.authHeader, (err: any, response: Empty | PromiseLike<Empty> | undefined) => {
+      this.client.rankStock(new Empty(), AuthModule.authHeader, (err: any, response: Empty | PromiseLike<Empty> | undefined) => {
         if (err) {
           reject(err);
         } else {
@@ -77,7 +82,7 @@ class ContentManagement extends VuexModule implements IContentManagementState {
   @Action({ rawError: true })
   public async checkStock(): Promise<CheckStockSummary> {
     return new Promise<CheckStockSummary>((resolve, reject) => {
-      this.client.checkStock(AuthModule.authHeader, (err: any, response: CheckStockSummary | PromiseLike<CheckStockSummary> | undefined) => {
+      this.client.checkStock(new Empty(), AuthModule.authHeader, (err: any, response: CheckStockSummary | PromiseLike<CheckStockSummary> | undefined) => {
         if (err) {
           reject(err);
         } else {
@@ -100,10 +105,24 @@ class ContentManagement extends VuexModule implements IContentManagementState {
     });
   }
 
+  // Query stock data in order to update
+  @Action({ rawError: true })
+  public async getStockItem(request: StockItemDescriptor): Promise<Stock> {
+    return new Promise<Stock>((resolve, reject) => {
+      this.stockQueryClient.getStockItem(request, AuthModule.authHeader, (err: any, response: Stock | PromiseLike<Stock> | undefined) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(response);
+        }
+      });
+    });
+  }
+
   @Action({ rawError: true })
   public async updateStockMetaData(request: UpdateStockMetadataRequest): Promise<Empty> {
     return new Promise<Empty>((resolve, reject) => {
-      this.client.updateStockMetaData(request, AuthModule.authHeader, (err: any, response: Empty | PromiseLike<Empty> | undefined) => {
+      this.client.updateStockMetadata(request, AuthModule.authHeader, (err: any, response: Empty | PromiseLike<Empty> | undefined) => {
         if (err) {
           reject(err);
         } else {
@@ -141,14 +160,18 @@ class ContentManagement extends VuexModule implements IContentManagementState {
   
   /* Access user submission */
   @Action({ rawError: true })
-  public async listStockRequests(request: ListStockRequestsRequest): Promise<StockRequest> {
-    return new Promise<StockRequest>((resolve, reject) => {
-      this.client.listStockRequests(request, AuthModule.authHeader, (err: any, response: StockRequest | PromiseLike<StockRequest> | undefined) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(response);
-        }
+  public async listStockRequests(request: ListStockRequestsRequest): Promise<StockRequest[]> {
+    return new Promise<StockRequest[]>((resolve, reject) => {
+      const srl : StockRequest[] = [];
+      const stream = this.client.listStockRequests(request, undefined);
+      stream.on("data", (item: unknown) => {
+        if(item instanceof StockRequest) srl.push(item);
+      });
+      stream.on("error", (err: Error) => {
+        reject(err);
+      });
+      stream.on("end", () => {
+        resolve(srl);
       });
     });
   }
@@ -167,28 +190,36 @@ class ContentManagement extends VuexModule implements IContentManagementState {
   }
 
   @Action({ rawError: true })
-  public async downloadStockRequestAssets(request: DownloadStockRequestAssetsRequest): Promise<StockRequestAsset> {
-    return new Promise<StockRequestAsset>((resolve, reject) => {
-      this.client.downloadStockRequestAssets(request, AuthModule.authHeader, (err: any, response: StockRequestAsset | PromiseLike<StockRequestAsset> | undefined) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(response);
-        }
+  public async downloadStockRequestAssets(request: DownloadStockRequestAssetsRequest): Promise<StockRequestAsset[]> {
+    return new Promise<StockRequestAsset[]>((resolve, reject) => {
+      const sral : StockRequestAsset[] = [];
+      const stream = this.client.downloadStockRequestAssets(request, undefined);
+      stream.on("data", (item: unknown) => {
+        if(item instanceof StockRequestAsset) sral.push(item);
+      });
+      stream.on("error", (err: Error) => {
+        reject(err);
+      });
+      stream.on("end", () => {
+        resolve(sral);
       });
     });
   }
 
   /* Access orders */
   @Action({ rawError: true })
-  public async listOrders(request: ListOrdersRequest): Promise<InternalOrder> {
-    return new Promise<InternalOrder>((resolve, reject) => {
-      this.client.listOrders(request, AuthModule.authHeader, (err: any, response: InternalOrder | PromiseLike<InternalOrder> | undefined) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(response);
-        }
+  public async listOrders(request: ListOrdersRequest): Promise<InternalOrder[]> {
+    return new Promise<InternalOrder[]>((resolve, reject) => {
+      const ol : InternalOrder[] = [];
+      const stream = this.client.listOrders(request, undefined);
+      stream.on("data", (item: unknown) => {
+        if(item instanceof InternalOrder) ol.push(item);
+      });
+      stream.on("error", (err: Error) => {
+        reject(err);
+      });
+      stream.on("end", () => {
+        resolve(ol);
       });
     });
   }
@@ -221,14 +252,18 @@ class ContentManagement extends VuexModule implements IContentManagementState {
 
   /* Access download links */
   @Action({ rawError: true })
-  public async listDownloadLinks(request: ListDownloadLinksRequest): Promise<Download> {
-    return new Promise<Download>((resolve, reject) => {
-      this.client.listDownloadLinks(request, AuthModule.authHeader, (err: any, response: Download | PromiseLike<Download> | undefined) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(response);
-        }
+  public async listDownloadLinks(request: ListDownloadLinksRequest): Promise<Download[]> {
+    return new Promise<Download[]>((resolve, reject) => {
+      const dl : Download[] = [];
+      const stream = this.client.listDownloadLinks(request, undefined);
+      stream.on("data", (item: unknown) => {
+        if(item instanceof Download) dl.push(item);
+      });
+      stream.on("error", (err: Error) => {
+        reject(err);
+      });
+      stream.on("end", () => {
+        resolve(dl);
       });
     });
   }
@@ -291,7 +326,7 @@ class ContentManagement extends VuexModule implements IContentManagementState {
   @Action({ rawError: true })
   public async sendEmailToAllUsers(request: EmailMessage): Promise<Empty> {
     return new Promise<Empty>((resolve, reject) => {
-      this.client.setRemainingDownloads(request, AuthModule.authHeader, (err: any, response: Empty | PromiseLike<Empty> | undefined) => {
+      this.client.sendEmailToAllUsers(request, AuthModule.authHeader, (err: any, response: Empty | PromiseLike<Empty> | undefined) => {
         if (err) {
           reject(err);
         } else {
@@ -343,7 +378,7 @@ class ContentManagement extends VuexModule implements IContentManagementState {
   @Action({ rawError: true })
   public async sendOrderLicenseAgreement(request: SendOrderLicenseAgreementsRequest): Promise<Empty> {
     return new Promise<Empty>((resolve, reject) => {
-      this.client.sendOrderLicenseAgreement(request, AuthModule.authHeader, (err: any, response: Empty | PromiseLike<Empty> | undefined) => {
+      this.client.sendOrderLicenseAgreements(request, AuthModule.authHeader, (err: any, response: Empty | PromiseLike<Empty> | undefined) => {
         if (err) {
           reject(err);
         } else {
